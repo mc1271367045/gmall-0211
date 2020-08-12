@@ -26,4 +26,9 @@ public class SpuDescServiceImpl extends ServiceImpl<SpuDescMapper, SpuDescEntity
         return new PageResultVo(page);
     }
 
+    @Override
+    public void insert(SpuDescEntity descEntity) {
+
+    }
+
 }

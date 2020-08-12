@@ -17,5 +17,8 @@ import java.util.Map;
 public interface SpuDescService extends IService<SpuDescEntity> {
 
     PageResultVo queryPage(PageParamVo paramVo);
+
+    void insert(SpuDescEntity descEntity);
+
 }
 
