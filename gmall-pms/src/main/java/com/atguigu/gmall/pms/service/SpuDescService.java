@@ -1,5 +1,6 @@
 package com.atguigu.gmall.pms.service;
 
+import com.atguigu.gmall.pms.vo.SpuVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.atguigu.gmall.common.bean.PageResultVo;
 import com.atguigu.gmall.common.bean.PageParamVo;
@@ -18,7 +19,11 @@ public interface SpuDescService extends IService<SpuDescEntity> {
 
     PageResultVo queryPage(PageParamVo paramVo);
 
+    void saveSpuDesc(SpuVo spuVo, Long spuId);
+
     void insert(SpuDescEntity descEntity);
+
+
 
 }
 

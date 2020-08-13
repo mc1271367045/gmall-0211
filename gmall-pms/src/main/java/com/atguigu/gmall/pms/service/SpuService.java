@@ -22,5 +22,6 @@ public interface SpuService extends IService<SpuEntity> {
     PageResultVo querySpuByPageAndCid3(Long cid, PageParamVo paramVo);
 
     void bigSave(SpuVo spuVo);
+
 }
 
