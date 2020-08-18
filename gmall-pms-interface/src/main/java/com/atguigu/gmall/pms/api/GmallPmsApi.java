@@ -2,10 +2,7 @@ package com.atguigu.gmall.pms.api;
 
 import com.atguigu.gmall.common.bean.PageParamVo;
 import com.atguigu.gmall.common.bean.ResponseVo;
-import com.atguigu.gmall.pms.entity.BrandEntity;
-import com.atguigu.gmall.pms.entity.CategoryEntity;
-import com.atguigu.gmall.pms.entity.SkuEntity;
-import com.atguigu.gmall.pms.entity.SpuEntity;
+import com.atguigu.gmall.pms.entity.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,8 +33,11 @@ public interface GmallPmsApi {
     @GetMapping("pms/category/{id}")
     ResponseVo<CategoryEntity> queryCategoryById(@PathVariable("id") Long id);
 
+    @GetMapping("pms/skuattrvalue/search/{skuId}")
+    ResponseVo<List<SkuAttrValueEntity>> querySearchAttrValueBySkuId(@PathVariable("skuId")Long skuId);
 
-
+    @GetMapping("pms/spuattrvalue/search/{spuId}")
+    public ResponseVo<List<SpuAttrValueEntity>> querySearchAttrValueBySpuId(@PathVariable("spuId")Long spuId);
 
 
 
