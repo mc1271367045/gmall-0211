@@ -178,9 +178,6 @@ public class SearchService {
                 )
         );
 
-        //测试
-        System.out.println(sourceBuilder.toString());
-
         // 7.指定包含的字段
         sourceBuilder.fetchSource(new String[]{"skuId", "title", "price", "image", "subTitle"}, null);
 
