@@ -22,8 +22,8 @@ spring:
       uris: http://192.168.18.128:9200
   jackson:
     default-property-inclusion: non_null
-#  thymeleaf:
-#    cache: false
+  thymeleaf:
+    cache: false
 #  rabbitmq:
 #    host: 192.168.18.128
 #    virtual-host: /fengge
