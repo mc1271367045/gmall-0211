@@ -36,6 +36,19 @@ public class CategoryController {
     private CategoryService categoryService;
 
 
+//    @GetMapping("all/{cid}")
+//    public ResponseVo<List<CategoryEntity>> query123CategoriesByCid3(@PathVariable("cid")Long cid){
+//        List<CategoryEntity> categoryEntities = this.categoryService.query123CategoriesByCid3(cid);
+//        return ResponseVo.ok(categoryEntities);
+//    }
+
+    @GetMapping("cates/{pid}")
+    public ResponseVo<List<CategoryEntity>> queryCategoriesWithSubByPid(@PathVariable("pid")Long pid){
+        List<CategoryEntity> categoryEntities =
+                this.categoryService.queryCategoriesWithSubByPid(pid);
+        return ResponseVo.ok(categoryEntities);
+    }
+
 
     @GetMapping("parent/{parentId}")
     public ResponseVo<List<CategoryEntity>> queryCategoriesByPid(@PathVariable("parentId")Long pid){
