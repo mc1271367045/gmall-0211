@@ -15,6 +15,7 @@ public class DistributeLock {
 
     private Thread thread;
 
+    // 获取锁
     public Boolean tryLock(String lockName, String uuid, Long expire){
         String script = "if (redis.call('exists', KEYS[1]) == 0 or redis.call('hexists', KEYS[1], ARGV[1]) == 1) " +
                 "then redis.call('hincrby', KEYS[1], ARGV[1], 1); redis.call('expire', KEYS[1], ARGV[2]); return 1; " +
@@ -31,6 +32,7 @@ public class DistributeLock {
         return true;
     }
 
+    // 释放锁
     public void unLock(String lockName, String uuid){
         String script = "if (redis.call('hexists', KEYS[1], ARGV[1]) == 0) then return nil end; " +
                 "if (redis.call('hincrby', KEYS[1], ARGV[1], -1) > 0) then return 0 " +
@@ -38,16 +40,17 @@ public class DistributeLock {
         if(this.redisTemplate.execute(new DefaultRedisScript<>(script, Long.class), Arrays.asList(lockName), uuid) == null){
             throw new IllegalArgumentException("attempt to unlock lock, lockname: " + lockName + ", uuid: " + uuid);
         }
-        this.thread.interrupt();
+        this.thread.interrupt(); // 中断线程
     }
 
+    // 自动续期
     private void renewTime(String lockName, String uuid, Long expire){
         String script = "if (redis.call('hexists', KEYS[1], ARGV[1]) == 1) " +
                 "then return redis.call('expire', KEYS[1], ARGV[2]) end;";
         this.thread = new Thread(() -> {
             while(true){
                 try {
-                    Thread.sleep(expire *  1000 * 2 / 3);
+                    Thread.sleep(expire *  1000 * 2 / 3); // 没过三分之二就续期一下
                     this.redisTemplate.execute(new DefaultRedisScript<>(script, Long.class), Arrays.asList(lockName), uuid, expire.toString());
                 } catch (InterruptedException e) {
                     e.printStackTrace();

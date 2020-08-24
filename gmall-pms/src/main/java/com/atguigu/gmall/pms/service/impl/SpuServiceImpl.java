@@ -82,6 +82,7 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, SpuEntity> implements
             wrapper.eq("category_id", cid);
         }
 
+        // 判断key不为空要有关键字查询
         String key = paramVo.getKey();
         if (StringUtils.isNotBlank(key)){
             wrapper.and(t -> t.like("name", key).or().eq("id", key));
