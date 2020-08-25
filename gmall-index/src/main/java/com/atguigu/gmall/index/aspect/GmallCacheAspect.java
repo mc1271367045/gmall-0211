@@ -55,7 +55,6 @@ public class GmallCacheAspect {
         Object[] args = joinPoint.getArgs();
         // prefix + args 组成缓存key
         String key = prefix + Arrays.asList(args);
-
         // 获取方法的返回值类型
         Class returnType = signature.getReturnType();
 
@@ -65,15 +64,15 @@ public class GmallCacheAspect {
             return JSON.parseObject(json, returnType);
         }
 
-        // 2.加分布式锁
-        String lock = gmallCache.lock();
-        RLock fairLock = this.redissonClient.getFairLock(lock + args);
+        // 2.加分布式锁，防止缓存击穿
+        String lock = gmallCache.lock();// 获取注解中锁的名称
+        RLock fairLock = this.redissonClient.getFairLock(lock + args);// 只锁当前参数所对应的锁，提高性能
         fairLock.lock();
 
         // 3.再查缓存，有直接返回
         String json2 = this.redisTemplate.opsForValue().get(key);
         if (StringUtils.isNotBlank(json2)){
-            fairLock.unlock();
+            fairLock.unlock();// 切记：return之前要释放锁
             return JSON.parseObject(json2, returnType);
         }
 
@@ -88,6 +87,7 @@ public class GmallCacheAspect {
         // 6.解锁
         fairLock.unlock();
 
+        // 7.返回结果
         return result;
     }
 }

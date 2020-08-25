@@ -36,11 +36,12 @@ public class CategoryController {
     private CategoryService categoryService;
 
 
-//    @GetMapping("all/{cid}")
-//    public ResponseVo<List<CategoryEntity>> query123CategoriesByCid3(@PathVariable("cid")Long cid){
-//        List<CategoryEntity> categoryEntities = this.categoryService.query123CategoriesByCid3(cid);
-//        return ResponseVo.ok(categoryEntities);
-//    }
+    // 根据三级分类的id查询一二三及分类
+    @GetMapping("all/{cid}")
+    public ResponseVo<List<CategoryEntity>> query123CategoriesByCid3(@PathVariable("cid")Long cid){
+        List<CategoryEntity> categoryEntities = this.categoryService.query123CategoriesByCid3(cid);
+        return ResponseVo.ok(categoryEntities);
+    }
 
     @GetMapping("cates/{pid}")
     public ResponseVo<List<CategoryEntity>> queryCategoriesWithSubByPid(@PathVariable("pid")Long pid){

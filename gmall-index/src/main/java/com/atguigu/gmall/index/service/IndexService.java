@@ -45,7 +45,7 @@ public class IndexService {
         return categoryEntities;
     }
 
-    //@GmallCache(prefix = KEY_PREFIX, lock = "lock", timeout = 43200, random = 10080)
+    @GmallCache(prefix = KEY_PREFIX, lock = "lock", timeout = 43200, random = 10080)
     public List<CategoryEntity> queryCategoriesWithSubByPid(Long pid) {
         // 再远程查询数据库，并放入缓存
         ResponseVo<List<CategoryEntity>> listResponseVo = this.pmsClient.queryCategoriesWithSubByPid(pid);
@@ -200,57 +200,59 @@ public class IndexService {
         }
     }
 
-//    public String testWrite() {
-//
-//        RReadWriteLock rwLock = this.redissonClient.getReadWriteLock("rwLock");
-//        rwLock.writeLock().lock(10, TimeUnit.SECONDS);
-//
-//        this.redisTemplate.opsForValue().set("msg", UUID.randomUUID().toString());
-//
-//        //rwLock.writeLock().unlock();
-//        return "写入成功。。。。。";
-//    }
-//
-//    public String testRead() {
-//        RReadWriteLock rwLock = this.redissonClient.getReadWriteLock("rwLock");
-//        rwLock.readLock().lock(10, TimeUnit.SECONDS);
-//
-//        String msg = this.redisTemplate.opsForValue().get("msg");
-//
-//        //rwLock.readLock().unlock();
-//        return "读取成功。。。" + msg;
-//    }
-//
-//    public String testSemaphore() {
-//        RSemaphore semaphore = this.redissonClient.getSemaphore("semaphore");
-//        semaphore.trySetPermits(3);
-//
-//        try {
-//            semaphore.acquire(1);
-//
-//            Thread.sleep(500);
-//            semaphore.release();
-//
-//            return "获取资源成功。。。。";
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
-//
-//    public String testCountDown() {
-//        RCountDownLatch latch = this.redissonClient.getCountDownLatch("latch");
-//        latch.countDown();
-//
-//        return "出来了一位同学。。。";
-//    }
-//
-//    public String testLatch() throws InterruptedException {
-//        RCountDownLatch latch = this.redissonClient.getCountDownLatch("latch");
-//        latch.trySetCount(6);
-//
-//        latch.await();
-//
-//        return "班长锁门。。。。。。";
-//    }
+    public String testWrite() {
+
+        RReadWriteLock rwLock = this.redissonClient.getReadWriteLock("rwLock");
+        rwLock.writeLock().lock(10, TimeUnit.SECONDS);
+
+        this.redisTemplate.opsForValue().set("msg", UUID.randomUUID().toString());
+
+        //rwLock.writeLock().unlock();
+        return "写入成功。。。。。";
+    }
+
+    public String testRead() {
+        RReadWriteLock rwLock = this.redissonClient.getReadWriteLock("rwLock");
+        rwLock.readLock().lock(10, TimeUnit.SECONDS);
+
+        String msg = this.redisTemplate.opsForValue().get("msg");
+
+        //rwLock.readLock().unlock();
+        return "读取成功。。。" + msg;
+    }
+
+    public String testSemaphore() {
+        RSemaphore semaphore = this.redissonClient.getSemaphore("semaphore");
+        semaphore.trySetPermits(3);// 设置三个资源
+
+        try {
+            semaphore.acquire(1);
+
+            Thread.sleep(500);
+            semaphore.release();
+
+            return "获取资源成功。。。。";
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String testCountDown() {
+        RCountDownLatch latch = this.redissonClient.getCountDownLatch("latch");
+        latch.countDown();
+
+        int num = 0;
+
+        return "出来了一位同学。。。"+ num++;
+    }
+
+    public String testLatch() throws InterruptedException {
+        RCountDownLatch latch = this.redissonClient.getCountDownLatch("latch");
+        latch.trySetCount(6);// 设置六个人在
+
+        latch.await();
+
+        return "班长锁门。。。。。。";
+    }
 }
