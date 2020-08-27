@@ -34,11 +34,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @GetMapping("query")
-//    public ResponseVo<UserEntity> queryUser(@RequestParam("loginName")String loginName, @RequestParam("password")String password){
-//        UserEntity userEntity = this.userService.queryUser(loginName, password);
-//        return ResponseVo.ok(userEntity);
-//    }
+    // 查询用户
+    @GetMapping("query")
+    public ResponseVo<UserEntity> queryUser(@RequestParam("loginName")String loginName, @RequestParam("password")String password){
+        UserEntity userEntity = this.userService.queryUser(loginName, password);
+        return ResponseVo.ok(userEntity);
+    }
 
     // 用户注册
     @PostMapping("register")

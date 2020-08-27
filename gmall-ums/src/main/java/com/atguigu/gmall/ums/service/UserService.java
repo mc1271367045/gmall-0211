@@ -24,5 +24,8 @@ public interface UserService extends IService<UserEntity> {
     // 用户注册
     void register(UserEntity user, String code);
 
+    // 查询用户
+    UserEntity queryUser(String loginName, String password);
+
 }
 
