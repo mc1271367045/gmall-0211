@@ -52,7 +52,7 @@ public class AuthService {
 
         // 4.把jwt类型的token放入cookie中
         CookieUtils.setCookie(request, response, this.jwtProperties.getCookieName(), jwt, jwtProperties.getExpire() * 60);
-        // 用户昵称
+        // 登陆成功之后显示用户昵称
         CookieUtils.setCookie(request, response, this.jwtProperties.getUnick(), userEntity.getNickname(), jwtProperties.getExpire() * 60);
     }
 }

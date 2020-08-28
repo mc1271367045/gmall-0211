@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 public class AuthController {
+
     @Autowired
     private AuthService authService;
 

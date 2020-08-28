@@ -34,11 +34,11 @@ public class Goods {
     @Field(type = FieldType.Integer)
     private Integer sales; // 销量
     @Field(type = FieldType.Date)
-    private Date createTime; // 新品排序
+    private Date createTime; // 新品排序,创建时间
     @Field(type = FieldType.Boolean)
     private Boolean store = false; // 是否有货
 
-    // 品牌
+    // 品牌过滤
     @Field(type = FieldType.Long)
     private Long brandId;
     @Field(type = FieldType.Keyword)
@@ -46,7 +46,7 @@ public class Goods {
     @Field(type = FieldType.Keyword)
     private String logo;
 
-    // 分类
+    // 分类过滤
     @Field(type = FieldType.Long)
     private Long categoryId;
     @Field(type = FieldType.Keyword)
