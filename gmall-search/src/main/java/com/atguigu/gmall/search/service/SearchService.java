@@ -238,6 +238,7 @@ public class SearchService {
             brandEntity.setId(brandId);
             // 获取桶中的子聚合
             Map<String, Aggregation> subAggregationMap = ((Terms.Bucket) bucket).getAggregations().asMap();
+
             // 获取品牌名称的子聚合
             ParsedStringTerms brandNameAgg = (ParsedStringTerms)subAggregationMap.get("brandNameAgg");
             List<? extends Terms.Bucket> nameBuckets = brandNameAgg.getBuckets();
@@ -272,6 +273,7 @@ public class SearchService {
             Long categoryId = ((Terms.Bucket) bucket).getKeyAsNumber().longValue();
             categoryEntity.setId(categoryId);
 
+            // 获取分类名称的子聚合
             ParsedStringTerms categoryNameAgg = (ParsedStringTerms)((Terms.Bucket) bucket).getAggregations().get("categoryNameAgg");
             if (categoryNameAgg != null) {
                 List<? extends Terms.Bucket> nameAggBuckets = categoryNameAgg.getBuckets();
@@ -279,17 +281,19 @@ public class SearchService {
                     categoryEntity.setName(nameAggBuckets.get(0).getKeyAsString());
                 }
             }
-
             return categoryEntity;
         }).collect(Collectors.toList());
         responseVo.setCategories(categoryEntities);
 
-        // 获取规格参数的聚合
+        // 获取规格参数的嵌套聚合
         ParsedNested attrAgg = (ParsedNested)aggregationMap.get("attrAgg");
+        // 获取嵌套聚合中的attrIdAgg子聚合
         ParsedLongTerms attrIdAgg = (ParsedLongTerms)attrAgg.getAggregations().get("attrIdAgg");
         if (attrIdAgg != null){
+            // 获取聚合中所有的桶
             List<? extends Terms.Bucket> attrIdAggBuckets = attrIdAgg.getBuckets();
             if (!CollectionUtils.isEmpty(attrIdAggBuckets)){
+                // 每个桶转化成每个对应SearchResponseAttrVo
                 List<SearchResponseAttrVo> searchResponseAttrVos = attrIdAggBuckets.stream().map(bucket -> {
                     SearchResponseAttrVo searchResponseAttrVo = new SearchResponseAttrVo();
 
@@ -297,7 +301,7 @@ public class SearchService {
                     Long attrId = ((Terms.Bucket) bucket).getKeyAsNumber().longValue();
                     searchResponseAttrVo.setAttrId(attrId);
 
-                    // 获取该参数所有的子聚合
+                    // 获取桶中所有的子聚合
                     Map<String, Aggregation> subAggregationMap = ((Terms.Bucket) bucket).getAggregations().asMap();
                     // 获取规格参数名的子聚合
                     ParsedStringTerms attrNameAgg = (ParsedStringTerms)subAggregationMap.get("attrNameAgg");
@@ -311,7 +315,7 @@ public class SearchService {
                         }
                     }
 
-                    // 获取规格参数值子聚合
+                    // 获取规格参数值的子聚合
                     ParsedStringTerms attrValueAgg = (ParsedStringTerms)subAggregationMap.get("attrValueAgg");
                     if (attrValueAgg != null) {
                         List<? extends Terms.Bucket> attrValueAggBuckets = attrValueAgg.getBuckets();

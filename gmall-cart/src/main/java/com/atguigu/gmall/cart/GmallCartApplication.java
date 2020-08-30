@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @EnableFeignClients
 @MapperScan("com.atguigu.gmall.cart.mapper")
-@EnableAsync
+@EnableAsync // 启动异步调用
 public class GmallCartApplication {
 
     public static void main(String[] args) {
