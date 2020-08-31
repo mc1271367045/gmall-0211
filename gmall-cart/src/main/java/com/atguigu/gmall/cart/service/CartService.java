@@ -5,9 +5,8 @@ import com.atguigu.gmall.cart.Interceptor.LoginInterceptor;
 import com.atguigu.gmall.cart.feign.GmallPmsClient;
 import com.atguigu.gmall.cart.feign.GmallSmsClient;
 import com.atguigu.gmall.cart.feign.GmallWmsClient;
-import com.atguigu.gmall.cart.mapper.CartMapper;
 import com.atguigu.gmall.cart.pojo.Cart;
-import com.atguigu.gmall.cart.pojo.UserInfo;
+import com.atguigu.gmall.common.bean.UserInfo;
 import com.atguigu.gmall.common.bean.ResponseVo;
 import com.atguigu.gmall.pms.entity.SkuAttrValueEntity;
 import com.atguigu.gmall.pms.entity.SkuEntity;
@@ -113,7 +112,7 @@ public class CartService {
             cart.setSales(JSON.toJSONString(itemSaleVos));
 
             // 新增mysql数据库
-            this.cartAsyncService.addCart(cart);
+            this.cartAsyncService.addCart(userId,cart);
             // 并且新增价格的缓存，如果已经有人把该商品加入了购物车，该商品的价格缓存已存在。这时依然进行加缓存，相当于做了价格同步
             this.redisTemplate.opsForValue().set(PRICE_PREFIX + skuId, skuEntity.getPrice().toString());
         }
@@ -180,7 +179,7 @@ public class CartService {
                     this.cartAsyncService.updateCartByUserIdAndSkuId(userId.toString(), cart);
                 } else {
                     cart.setUserId(userId.toString());
-                    this.cartAsyncService.addCart(cart);  // 要覆盖mysql中的Userkey的数据（没有userkey的数据 转化未对应的userId的数据）
+                    this.cartAsyncService.addCart(userId.toString(),cart);  // 要覆盖mysql中的Userkey的数据（没有userkey的数据 转化未对应的userId的数据）
                 }
                 // 更新redis的数量
                 loginHashOps.put(cart.getSkuId().toString(), JSON.toJSONString(cart));
@@ -250,6 +249,17 @@ public class CartService {
         }
     }
 
+
+    public List<Cart> queryCheckedCartByUserId(Long userId) {
+        BoundHashOperations<String, Object, Object> hashOps = this.redisTemplate.boundHashOps(KEY_PREFIX + userId);
+        List<Object> cartJsons = hashOps.values();
+        if (!CollectionUtils.isEmpty(cartJsons)){
+            return cartJsons.stream().map(cartJson -> JSON.parseObject(cartJson.toString(), Cart.class)).filter(cart -> cart.getCheck()).collect(Collectors.toList());
+        }
+        return null;
+    }
+
+
     // 测试SpringTask
     @Async
     public String executor1(){
@@ -303,6 +313,7 @@ public class CartService {
         }
         return AsyncResult.forValue("hello executor2");
     }
+
 
 
 }

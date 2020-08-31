@@ -4,6 +4,8 @@ import com.atguigu.gmall.wms.entity.WareSkuEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * 商品库存
  * 
@@ -13,5 +15,11 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface WareSkuMapper extends BaseMapper<WareSkuEntity> {
-	
+
+    List<WareSkuEntity> check(Long skuId, Integer count);
+
+    int lock(Long id, Integer count);
+
+    void unlock(Long wareSkuId, Integer count);
+
 }
