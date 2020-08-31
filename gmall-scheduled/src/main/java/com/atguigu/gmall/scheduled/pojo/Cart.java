@@ -1,4 +1,4 @@
-package com.atguigu.gmall.cart.pojo;
+package com.atguigu.gmall.scheduled.pojo;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 /**
  * @Auther: Gork_Mc
- * @Date: 2020/08/28/20:36
+ * @Date: 2020/08/31/8:52
  * @Description:
  */
 @Data
