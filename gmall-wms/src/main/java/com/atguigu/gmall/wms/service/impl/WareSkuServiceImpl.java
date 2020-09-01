@@ -22,6 +22,7 @@ import com.atguigu.gmall.common.bean.PageParamVo;
 import com.atguigu.gmall.wms.mapper.WareSkuMapper;
 import com.atguigu.gmall.wms.entity.WareSkuEntity;
 import com.atguigu.gmall.wms.service.WareSkuService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 
@@ -53,6 +54,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
     }
 
 
+    @Transactional
     @Override
     public List<SkuLockVo> checkAndLock(List<SkuLockVo> lockVos, String orderToken) {
 
@@ -79,6 +81,8 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
 
         // 为了方便将来解锁库存，需要把锁定库存的信息缓存到redis中
         this.redisTemplate.opsForValue().set(KEY_PREFIX + orderToken, JSON.toJSONString(lockVos));
+
+        this.rabbitTemplate.convertAndSend("ORDER-EXCHANGE", "stock.ttl", orderToken);
 
 
         // 锁定成功，返回null

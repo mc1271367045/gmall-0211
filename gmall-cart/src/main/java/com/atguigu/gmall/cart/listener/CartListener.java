@@ -59,6 +59,7 @@ public class CartListener {
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
     }
 
+
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(value = "ORDER-CART-QUEUE", durable = "true"),
             exchange = @Exchange(value = "ORDER-EXCHANGE", ignoreDeclarationExceptions = "true", type = ExchangeTypes.TOPIC),

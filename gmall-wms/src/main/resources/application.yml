@@ -24,6 +24,18 @@ spring:
     password: 980306
   redis:
     host: 192.168.18.128
+  rabbitmq:
+    host: 192.168.18.128
+    virtual-host: /gorkvh
+    username: admin
+    password: admin
+    listener:
+      simple:
+        acknowledge-mode: manual
+        prefetch: 1
+        concurrency: 3
+    publisher-returns: true
+    publisher-confirm-type: simple
 feign:
   sentinel:
     enabled: true
