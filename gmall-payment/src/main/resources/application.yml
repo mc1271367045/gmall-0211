@@ -1,0 +1,47 @@
+server:
+  port: 18092
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8719
+  zipkin:
+    base-url: http://localhost:9411
+    discovery-client-enabled: false
+    sender:
+      type: web
+  sleuth:
+    sampler:
+      probability: 1
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/guli_payment
+    username: root
+    password: 980306
+  redis:
+    host: 192.168.18.128
+  rabbitmq:
+    host: 192.168.18.128
+    virtual-host: /gorkvh
+    username: admin
+    password: admin
+    publisher-confirm-type: SIMPLE
+    publisher-returns: true
+feign:
+  sentinel:
+    enabled: true
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+alipay:
+  gatewayUrl: https://openapi.alipaydev.com/gateway.do
+  app_id: 2021000118644418
+  merchant_private_key: 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
+  alipay_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkfFIyGRRPPdJLEz26suKIVWGe2tjzq6+W8KYQ61afroQoomaN4TzqQlsDRmyJ3Jz+i1tMvJruWBt4gUAeEdWpM8derZ9FKyaw4cU6NYk5mye3joCck04/XeYZ/FUn06KQv9XNI+pTKwB6y2GgizB51H3gFih66LcvHF4feNg916RuVQy1WIXpSXHGpjgWxdG+/LHMeH/Lc85oeM1c+gkwQU5dpj8i+0byTo35k+s7glQ2TNlKun8YOhhZAhz57XQ9p4QlqdtvBA4NNvSWYEsxS0F5SWuUTCRRRhVufDLX4eLH7L0wecP92PwQafb4yFC9c+E1MRqj/3zI1GMbKs3bwIDAQAB/xEgXOciNrNyvR6pdJVDQ7iuXpJNXcniJB94G+wB3jn8EDygAwsdYHiQH8B6kp7clQ0tY3EEVy7w8/gleOT5zSG5eqLjtHy7VdWsWiQbDH6Tsl5ZMrr92Ki0QbWxepL642BG/8EeKsi3+/wdSWPV0Ujbw1+lpTID5wpiQbpCYOOs5bAuhJeqJNa4ovVPm238CEzmXCYmpH4fnsh6pjO/BiSLrdMx8Z2xy+cjQ3wcEF0R8vGgOz+q9yiuVkXaPU6emLJ/m8baRlkREszl80AghKNgBuV0771jsRykA81oR+9iJo/tdpvqisGW4TLirnrq1iDLDHZOQIDAQAB
+  notify_url: http://9glldacce2.52http.net/pay/success
+  return_url: http://9glldacce2.52http.net/pay/ok     # http://3i2s586988.qicp.vip:24310/ 花生壳备用

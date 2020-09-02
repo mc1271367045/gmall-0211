@@ -45,8 +45,7 @@ public class CategoryController {
 
     @GetMapping("cates/{pid}")
     public ResponseVo<List<CategoryEntity>> queryCategoriesWithSubByPid(@PathVariable("pid")Long pid){
-        List<CategoryEntity> categoryEntities =
-                this.categoryService.queryCategoriesWithSubByPid(pid);
+        List<CategoryEntity> categoryEntities = this.categoryService.queryCategoriesWithSubByPid(pid);
         return ResponseVo.ok(categoryEntities);
     }
 

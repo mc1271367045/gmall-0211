@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
  */
 public interface GmallOmsApi {
     @PostMapping("oms/order/submit/{userId}")
-    public ResponseVo<OrderEntity> saveOrder(@RequestBody OrderSubmitVo submitVo, @PathVariable("userId")Long userId);
+    ResponseVo<OrderEntity> saveOrder(@RequestBody OrderSubmitVo submitVo, @PathVariable("userId")Long userId);
 
     @GetMapping("oms/order/token/{orderToken}")
-    public ResponseVo<OrderEntity> queryOrderByToken(@PathVariable("orderToken")String orderToken, @RequestParam("userId")Long userId);
+    ResponseVo<OrderEntity> queryOrderByToken(@PathVariable("orderToken")String orderToken, @RequestParam("userId")Long userId);
 }

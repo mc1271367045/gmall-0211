@@ -78,28 +78,28 @@ public class OrderListener {
         }
     }
 
-//    @RabbitListener(bindings = @QueueBinding(
-//            value = @Queue(value = "ORDER-SUCCESS-QUEUE", durable = "true"),
-//            exchange = @Exchange(value = "ORDER-EXCHANGE", ignoreDeclarationExceptions = "true", type = ExchangeTypes.TOPIC),
-//            key = {"order.success"}
-//    ))
-//    public void successOrder(String orderToken, Channel channel, Message message) throws IOException {
-//
-//        // 更新订单状态
-//        if (this.orderMapper.success(orderToken) == 1){
-//            // 发送消息给wms减库存
-//            this.rabbitTemplate.convertAndSend("ORDER-EXCHANGE", "stock.minus", orderToken);
-//
-//            // 发送消息给ums加积分 TODO：
-//            OrderEntity orderEntity = this.orderMapper.selectOne(new QueryWrapper<OrderEntity>().eq("order_sn", orderToken));
-//            Map<String, Object> map = new HashMap<>();
-//            map.put("userId", orderEntity.getUserId());
-//            map.put("integration", orderEntity.getIntegration());
-//            map.put("growth", orderEntity.getGrowth());
-//            this.rabbitTemplate.convertAndSend("ORDER-EXCHANGE", "user.bounds", map);
-//        }
-//        channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-//    }
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(value = "ORDER-SUCCESS-QUEUE", durable = "true"),
+            exchange = @Exchange(value = "ORDER-EXCHANGE", ignoreDeclarationExceptions = "true", type = ExchangeTypes.TOPIC),
+            key = {"order.success"}
+    ))
+    public void successOrder(String orderToken, Channel channel, Message message) throws IOException {
+
+        // 更新订单状态
+        if (this.orderMapper.success(orderToken) == 1){
+            // 发送消息给wms减库存
+            this.rabbitTemplate.convertAndSend("ORDER-EXCHANGE", "stock.minus", orderToken);
+
+            // 发送消息给ums加积分 TODO：
+            OrderEntity orderEntity = this.orderMapper.selectOne(new QueryWrapper<OrderEntity>().eq("order_sn", orderToken));
+            Map<String, Object> map = new HashMap<>();
+            map.put("userId", orderEntity.getUserId());
+            map.put("integration", orderEntity.getIntegration());
+            map.put("growth", orderEntity.getGrowth());
+            this.rabbitTemplate.convertAndSend("ORDER-EXCHANGE", "user.bounds", map);
+        }
+        channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+    }
 
 
 }

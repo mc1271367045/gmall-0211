@@ -3,6 +3,7 @@ package com.atguigu.gmall.wms.mapper;
 import com.atguigu.gmall.wms.entity.WareSkuEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,10 +17,11 @@ import java.util.List;
 @Mapper
 public interface WareSkuMapper extends BaseMapper<WareSkuEntity> {
 
-    List<WareSkuEntity> check(Long skuId, Integer count);
+    public List<WareSkuEntity> check(@Param("skuId") Long skuId, @Param("count") Integer count);
 
-    int lock(Long id, Integer count);
+    public int lock(@Param("id")Long id, @Param("count")Integer count);
 
-    void unlock(Long wareSkuId, Integer count);
+    public int unlock(@Param("id")Long id, @Param("count")Integer count);
 
+    public int minusStock(@Param("id")Long id, @Param("count")Integer count);
 }
